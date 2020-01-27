@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <malloc.h>
+#include <stddef.h>
 
 struct singly_linked_list *singly_linked_list_new(void)
 {
@@ -134,7 +135,7 @@ bool singly_linked_list_contains(struct singly_linked_list *list, void *data)
     struct singly_linked_list_node *current = list->head;
     while (current)
     {
-        if (current->data = data)
+        if (current->data == data)
         {
             contains = true;
             break;
@@ -146,18 +147,33 @@ bool singly_linked_list_contains(struct singly_linked_list *list, void *data)
 
 void *singly_linked_list_get_at(struct singly_linked_list *list, int index)
 {
-    struct singly_linked_list_node *node = NULL;
+    void *data = NULL;
     struct singly_linked_list_node *current = list->head;
     int current_index = 0;
     while (current)
     {
         if (current_index == index)
         {
-            node = current->data;
+            data = current->data;
             break;
         }
         current_index++;
         current = current->next;
     }
-    return node;
+    return data;
+}
+
+void singly_linked_list_reverse(struct singly_linked_list *list)
+{
+    struct singly_linked_list_node *current = list->head;
+    struct singly_linked_list_node *previous = NULL;
+    struct singly_linked_list_node *next = NULL;
+    while (current)
+    {
+        next = current->next;
+        current->next = previous;
+        previous = current;
+        current = next;
+    }
+    list->head = previous;
 }

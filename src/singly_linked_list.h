@@ -31,4 +31,6 @@ bool singly_linked_list_contains(struct singly_linked_list *list, void *data);
 
 void *singly_linked_list_get_at(struct singly_linked_list *list, int index);
 
+void singly_linked_list_reverse(struct singly_linked_list *list);
+
 #endif
