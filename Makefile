@@ -8,14 +8,12 @@ SRC	:= \
 	src/doubly_linked_list.c \
 	src/main.c \
 	src/singly_linked_list.c
-OBJ := $(SRC:src/%.c=build/%.o)
-DEP := $(OBJ:%.o=%.d)
-TGT := bin/main
+TARGET := bin/main
 
 .PHONY: all
-all: $(TGT)
+all: $(TARGET)
 
-$(TGT): $(OBJ)
+$(TARGET): $(SRC:src/%.c=build/%.o)
 	mkdir -p $(@D)
 	$(CC) $^ -o $@ $(LDFLAGS) $(LDLIBS)
 
@@ -23,11 +21,11 @@ build/%.o: src/%.c
 	mkdir -p $(@D)
 	$(CC) -c $< -o $@ -MMD -MF $(@:.o=.d) $(CFLAGS) $(CPPFLAGS)
 
--include $(DEP)
+-include $(SRC:src/%.c=build/%.d)
 
 .PHONY: run
 run: all
-	./$(TGT)
+	./$(TARGET)
 
 .PHONY: clean
 clean:
