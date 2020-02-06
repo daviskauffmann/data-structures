@@ -5,9 +5,8 @@ LDFLAGS :=
 LDLIBS :=
 
 SRC	:= \
-	src/doubly_linked_list.c \
-	src/main.c \
-	src/singly_linked_list.c
+	src/list.c \
+	src/main.c
 TARGET := bin/main
 
 .PHONY: all

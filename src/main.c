@@ -1,168 +1,118 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "doubly_linked_list.h"
-#include "singly_linked_list.h"
+#include "list.h"
 
-void singly_linked_list_tests(void)
+void list_test(void)
 {
     // create new list
-    struct singly_linked_list *list = singly_linked_list_new();
+    struct list *list = list_new();
     assert(list);
 
     // insert at beginning
     int item_1 = 1;
-    struct singly_linked_list_node *node_1 = singly_linked_list_append(list, &item_1);
+    struct list_node *node_1 = list_append(list, &item_1);
     assert(node_1);
     assert(node_1->data == &item_1);
     assert(*(int *)node_1->data == item_1);
 
     int item_2 = 2;
-    struct singly_linked_list_node *node_2 = singly_linked_list_append(list, &item_2);
+    struct list_node *node_2 = list_append(list, &item_2);
     assert(node_2);
     assert(node_2->data == &item_2);
     assert(*(int *)node_2->data == item_2);
 
     int item_4 = 4;
-    struct singly_linked_list_node *node_4 = singly_linked_list_append(list, &item_4);
+    struct list_node *node_4 = list_append(list, &item_4);
     assert(node_4);
     assert(node_4->data == &item_4);
     assert(*(int *)node_4->data == item_4);
 
     int item_5 = 5;
-    struct singly_linked_list_node *node_5 = singly_linked_list_append(list, &item_5);
+    struct list_node *node_5 = list_append(list, &item_5);
     assert(node_5);
     assert(node_5->data == &item_5);
     assert(*(int *)node_5->data == item_5);
 
     int item_6 = 6;
-    struct singly_linked_list_node *node_6 = singly_linked_list_append(list, &item_6);
+    struct list_node *node_6 = list_append(list, &item_6);
     assert(node_6);
     assert(node_6->data == &item_6);
     assert(*(int *)node_6->data == item_6);
 
     // insert after element
     int item_3 = 3;
-    struct singly_linked_list_node *node_3 = singly_linked_list_insert_after(node_2, &item_3);
+    struct list_node *node_3 = list_insert_after(list, node_2, &item_3);
     assert(node_3);
     assert(node_3->data == &item_3);
     assert(*(int *)node_3->data == item_3);
 
     // insert at end
     int item_0 = 0;
-    struct singly_linked_list_node *node_0 = singly_linked_list_prepend(list, &item_0);
+    struct list_node *node_0 = list_prepend(list, &item_0);
     assert(node_0);
     assert(node_0->data == &item_0);
     assert(*(int *)node_0->data == item_0);
 
     // remove element
-    singly_linked_list_remove(list, &item_0);
-    singly_linked_list_remove(list, &item_4);
+    list_remove(list, node_0);
+    list_remove(list, node_4);
+    list_remove(list, node_6);
 
-    // remove at index
-    singly_linked_list_remove_at(list, 0);
-    singly_linked_list_remove_at(list, 1);
-
-    // count elements
-    int count = singly_linked_list_count(list);
-    assert(count == 3);
+    // count elementss
+    int count = list_count(list);
+    assert(count == 4);
 
     // contains element
-    bool contains_5 = singly_linked_list_contains(list, &item_5);
+    bool contains_5 = list_contains(list, &item_5);
     assert(contains_5);
 
     // get elements
-    int *item_p = singly_linked_list_get_at(list, 0);
+    int *item_p;
+    item_p = list_get_at(list, 0);
+    assert(item_p);
+    assert(item_p == &item_1);
+    assert(*item_p == item_1);
+    item_p = list_get_at(list, 1);
     assert(item_p);
     assert(item_p == &item_2);
     assert(*item_p == item_2);
-    item_p = singly_linked_list_get_at(list, 1);
+    item_p = list_get_at(list, 2);
+    assert(item_p);
+    assert(item_p == &item_3);
+    assert(*item_p == item_3);
+    item_p = list_get_at(list, 3);
     assert(item_p);
     assert(item_p == &item_5);
     assert(*item_p == item_5);
-    item_p = singly_linked_list_get_at(list, 2);
-    assert(item_p);
-    assert(item_p == &item_6);
-    assert(*item_p == item_6);
 
     // reverse
-    singly_linked_list_reverse(list);
+    list_reverse(list);
 
     // verify reverse
-    item_p = singly_linked_list_get_at(list, 0);
-    assert(item_p);
-    assert(item_p == &item_6);
-    assert(*item_p == item_6);
-    item_p = singly_linked_list_get_at(list, 1);
+    item_p = list_get_at(list, 0);
     assert(item_p);
     assert(item_p == &item_5);
     assert(*item_p == item_5);
-    item_p = singly_linked_list_get_at(list, 2);
+    item_p = list_get_at(list, 1);
+    assert(item_p);
+    assert(item_p == &item_3);
+    assert(*item_p == item_3);
+    item_p = list_get_at(list, 2);
     assert(item_p);
     assert(item_p == &item_2);
     assert(*item_p == item_2);
+    item_p = list_get_at(list, 3);
+    assert(item_p);
+    assert(item_p == &item_1);
+    assert(*item_p == item_1);
 
-    singly_linked_list_delete(list);
-}
-
-void doubly_linked_list_tests(void)
-{
-    // create new list
-    struct doubly_linked_list *list = doubly_linked_list_new();
-    assert(list);
-
-    // insert at beginning
-    int item_1 = 1;
-    struct doubly_linked_list_node *node_1 = doubly_linked_list_append(list, &item_1);
-    assert(node_1);
-    assert(node_1->data == &item_1);
-    assert(*(int *)node_1->data == item_1);
-
-    int item_2 = 2;
-    struct doubly_linked_list_node *node_2 = doubly_linked_list_append(list, &item_2);
-    assert(node_2);
-    assert(node_2->data == &item_2);
-    assert(*(int *)node_2->data == item_2);
-
-    int item_4 = 4;
-    struct doubly_linked_list_node *node_4 = doubly_linked_list_append(list, &item_4);
-    assert(node_4);
-    assert(node_4->data == &item_4);
-    assert(*(int *)node_4->data == item_4);
-
-    int item_5 = 5;
-    struct doubly_linked_list_node *node_5 = doubly_linked_list_append(list, &item_5);
-    assert(node_5);
-    assert(node_5->data == &item_5);
-    assert(*(int *)node_5->data == item_5);
-
-    int item_6 = 6;
-    struct doubly_linked_list_node *node_6 = doubly_linked_list_append(list, &item_6);
-    assert(node_6);
-    assert(node_6->data == &item_6);
-    assert(*(int *)node_6->data == item_6);
-
-    // insert after element
-    int item_3 = 3;
-    struct doubly_linked_list_node *node_3 = doubly_linked_list_insert_after(node_2, &item_3);
-    assert(node_3);
-    assert(node_3->data == &item_3);
-    assert(*(int *)node_3->data == item_3);
-
-    // insert at end
-    int item_0 = 0;
-    struct doubly_linked_list_node *node_0 = doubly_linked_list_prepend(list, &item_0);
-    assert(node_0);
-    assert(node_0->data == &item_0);
-    assert(*(int *)node_0->data == item_0);
-
-    doubly_linked_list_delete(list);
+    list_delete(list);
 }
 
 int main(int argc, char *argv[])
 {
-    singly_linked_list_tests();
-    doubly_linked_list_tests();
+    list_test();
 
     return 0;
 }
