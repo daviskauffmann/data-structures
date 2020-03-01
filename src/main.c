@@ -1,117 +1,136 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "array.h"
 #include "list.h"
+
+void array_test(void)
+{
+    int *a = NULL;
+    assert(array_len(a) == 0);
+    const size_t n = 1024;
+    for (size_t i = 0; i < n; i++)
+    {
+        array_push(a, i);
+    }
+    assert(array_len(a) == n);
+    for (size_t i = 0; i < array_len(a); i++)
+    {
+        assert(a[i] == (int)i);
+    }
+    array_free(a);
+    assert(a == NULL);
+    assert(array_len(a) == 0);
+}
 
 void list_test(void)
 {
     // create new list
-    struct list *list = list_new();
-    assert(list);
+    list_t *l = list_new();
+    assert(l);
 
     // insert at beginning
-    int item_1 = 1;
-    struct list_node *node_1 = list_append(list, &item_1);
-    assert(node_1);
-    assert(node_1->data == &item_1);
-    assert(*(int *)node_1->data == item_1);
+    int i1 = 1;
+    list_node_t *n1 = list_append(l, &i1);
+    assert(n1);
+    assert(n1->data == &i1);
+    assert(*(int *)n1->data == i1);
 
-    int item_2 = 2;
-    struct list_node *node_2 = list_append(list, &item_2);
-    assert(node_2);
-    assert(node_2->data == &item_2);
-    assert(*(int *)node_2->data == item_2);
+    int i2 = 2;
+    list_node_t *n2 = list_append(l, &i2);
+    assert(n2);
+    assert(n2->data == &i2);
+    assert(*(int *)n2->data == i2);
 
-    int item_4 = 4;
-    struct list_node *node_4 = list_append(list, &item_4);
-    assert(node_4);
-    assert(node_4->data == &item_4);
-    assert(*(int *)node_4->data == item_4);
+    int i4 = 4;
+    list_node_t *n4 = list_append(l, &i4);
+    assert(n4);
+    assert(n4->data == &i4);
+    assert(*(int *)n4->data == i4);
 
-    int item_5 = 5;
-    struct list_node *node_5 = list_append(list, &item_5);
-    assert(node_5);
-    assert(node_5->data == &item_5);
-    assert(*(int *)node_5->data == item_5);
+    int i5 = 5;
+    list_node_t *n5 = list_append(l, &i5);
+    assert(n5);
+    assert(n5->data == &i5);
+    assert(*(int *)n5->data == i5);
 
-    int item_6 = 6;
-    struct list_node *node_6 = list_append(list, &item_6);
-    assert(node_6);
-    assert(node_6->data == &item_6);
-    assert(*(int *)node_6->data == item_6);
+    int i6 = 6;
+    list_node_t *n6 = list_append(l, &i6);
+    assert(n6);
+    assert(n6->data == &i6);
+    assert(*(int *)n6->data == i6);
 
     // insert after element
-    int item_3 = 3;
-    struct list_node *node_3 = list_insert_after(list, node_2, &item_3);
-    assert(node_3);
-    assert(node_3->data == &item_3);
-    assert(*(int *)node_3->data == item_3);
+    int i3 = 3;
+    list_node_t *n3 = list_insert_after(l, n2, &i3);
+    assert(n3);
+    assert(n3->data == &i3);
+    assert(*(int *)n3->data == i3);
 
     // insert at end
-    int item_0 = 0;
-    struct list_node *node_0 = list_prepend(list, &item_0);
-    assert(node_0);
-    assert(node_0->data == &item_0);
-    assert(*(int *)node_0->data == item_0);
+    int i0 = 0;
+    list_node_t *n0 = list_prepend(l, &i0);
+    assert(n0);
+    assert(n0->data == &i0);
+    assert(*(int *)n0->data == i0);
 
     // remove element
-    list_remove(list, node_0);
-    list_remove(list, node_4);
-    list_remove(list, node_6);
+    list_remove(l, n0);
+    list_remove(l, n4);
+    list_remove(l, n6);
 
     // count elementss
-    int count = list_count(list);
-    assert(count == 4);
+    assert(list_count(l) == 4);
 
     // contains element
-    bool contains_5 = list_contains(list, &item_5);
-    assert(contains_5);
+    assert(list_contains(l, &i5));
 
     // get elements
-    int *item_p;
-    item_p = list_get_at(list, 0);
-    assert(item_p);
-    assert(item_p == &item_1);
-    assert(*item_p == item_1);
-    item_p = list_get_at(list, 1);
-    assert(item_p);
-    assert(item_p == &item_2);
-    assert(*item_p == item_2);
-    item_p = list_get_at(list, 2);
-    assert(item_p);
-    assert(item_p == &item_3);
-    assert(*item_p == item_3);
-    item_p = list_get_at(list, 3);
-    assert(item_p);
-    assert(item_p == &item_5);
-    assert(*item_p == item_5);
+    int *ip;
+    ip = list_get_at(l, 0);
+    assert(ip);
+    assert(ip == &i1);
+    assert(*ip == i1);
+    ip = list_get_at(l, 1);
+    assert(ip);
+    assert(ip == &i2);
+    assert(*ip == i2);
+    ip = list_get_at(l, 2);
+    assert(ip);
+    assert(ip == &i3);
+    assert(*ip == i3);
+    ip = list_get_at(l, 3);
+    assert(ip);
+    assert(ip == &i5);
+    assert(*ip == i5);
 
     // reverse
-    list_reverse(list);
+    list_reverse(l);
 
     // verify reverse
-    item_p = list_get_at(list, 0);
-    assert(item_p);
-    assert(item_p == &item_5);
-    assert(*item_p == item_5);
-    item_p = list_get_at(list, 1);
-    assert(item_p);
-    assert(item_p == &item_3);
-    assert(*item_p == item_3);
-    item_p = list_get_at(list, 2);
-    assert(item_p);
-    assert(item_p == &item_2);
-    assert(*item_p == item_2);
-    item_p = list_get_at(list, 3);
-    assert(item_p);
-    assert(item_p == &item_1);
-    assert(*item_p == item_1);
+    ip = list_get_at(l, 0);
+    assert(ip);
+    assert(ip == &i5);
+    assert(*ip == i5);
+    ip = list_get_at(l, 1);
+    assert(ip);
+    assert(ip == &i3);
+    assert(*ip == i3);
+    ip = list_get_at(l, 2);
+    assert(ip);
+    assert(ip == &i2);
+    assert(*ip == i2);
+    ip = list_get_at(l, 3);
+    assert(ip);
+    assert(ip == &i1);
+    assert(*ip == i1);
 
-    list_delete(list);
+    list_delete(l);
 }
 
 int main(int argc, char *argv[])
 {
+    array_test();
     list_test();
 
     return 0;

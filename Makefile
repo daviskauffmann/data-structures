@@ -5,6 +5,7 @@ LDFLAGS :=
 LDLIBS :=
 
 SRC	:= \
+	src/array.c \
 	src/list.c \
 	src/main.c
 TARGET := bin/main

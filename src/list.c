@@ -4,131 +4,131 @@
 #include <malloc.h>
 #include <stddef.h>
 
-struct list *list_new(void)
+list_t *list_new(void)
 {
-    struct list *list = malloc(sizeof(struct list));
-    assert(list);
-    list->head = NULL;
-    list->tail = NULL;
-    return list;
+    list_t *l = malloc(sizeof(list_t));
+    assert(l);
+    l->head = NULL;
+    l->tail = NULL;
+    return l;
 }
 
-void list_delete(struct list *list)
+void list_delete(list_t *l)
 {
-    struct list_node *current = list->head;
-    while (current)
+    list_node_t *curr = l->head;
+    while (curr)
     {
-        struct list_node *next = current->next;
-        free(current);
-        current = next;
+        list_node_t *next = curr->next;
+        free(curr);
+        curr = next;
     }
-    free(list);
+    free(l);
 }
 
-struct list_node *list_prepend(struct list *list, void *data)
+list_node_t *list_prepend(list_t *l, void *data)
 {
-    struct list_node *node = malloc(sizeof(struct list_node));
-    assert(node);
-    node->data = data;
-    node->next = list->head;
-    node->previous = NULL;
-    if (list->head)
+    list_node_t *n = malloc(sizeof(list_node_t));
+    assert(n);
+    n->data = data;
+    n->next = l->head;
+    n->prev = NULL;
+    if (l->head)
     {
-        list->head->previous = node;
+        l->head->prev = n;
     }
     else
     {
-        list->tail = node;
+        l->tail = n;
     }
-    list->head = node;
-    return node;
+    l->head = n;
+    return n;
 }
 
-struct list_node *list_insert_after(struct list *list, struct list_node *previous, void *data)
+list_node_t *list_insert_after(list_t *l, list_node_t *prev, void *data)
 {
-    assert(previous);
-    struct list_node *node = malloc(sizeof(struct list_node));
-    assert(node);
-    node->data = data;
-    node->next = previous->next;
-    previous->next = node;
-    node->previous = previous;
-    if (node->next)
+    assert(prev);
+    list_node_t *n = malloc(sizeof(list_node_t));
+    assert(n);
+    n->data = data;
+    n->next = prev->next;
+    prev->next = n;
+    n->prev = prev;
+    if (n->next)
     {
-        node->next->previous = node;
+        n->next->prev = n;
     }
-    if (previous == list->tail)
+    if (prev == l->tail)
     {
-        list->tail = node;
+        l->tail = n;
     }
-    return node;
+    return n;
 }
 
-struct list_node *list_append(struct list *list, void *data)
+list_node_t *list_append(list_t *l, void *data)
 {
-    struct list_node *node = malloc(sizeof(struct list_node));
-    assert(node);
-    node->data = data;
-    node->next = NULL;
-    if (list->head)
+    list_node_t *n = malloc(sizeof(list_node_t));
+    assert(n);
+    n->data = data;
+    n->next = NULL;
+    if (l->head)
     {
-        struct list_node *last = list->head;
+        list_node_t *last = l->head;
         while (last->next)
         {
             last = last->next;
         }
-        last->next = node;
-        node->previous = last;
+        last->next = n;
+        n->prev = last;
     }
     else
     {
-        node->previous = NULL;
-        list->head = node;
+        n->prev = NULL;
+        l->head = n;
     }
-    list->tail = node;
-    return node;
+    l->tail = n;
+    return n;
 }
 
-void list_remove(struct list *list, struct list_node *node)
+void list_remove(list_t *l, list_node_t *n)
 {
-    if (!list->head || !node)
+    if (!l->head || !n)
     {
         return;
     }
-    if (list->head == node)
+    if (l->head == n)
     {
-        list->head = node->next;
+        l->head = n->next;
     }
-    if (list->tail == node)
+    if (l->tail == n)
     {
-        list->tail = node->previous;
+        l->tail = n->prev;
     }
-    if (node->next)
+    if (n->next)
     {
-        node->next->previous = node->previous;
+        n->next->prev = n->prev;
     }
-    if (node->previous)
+    if (n->prev)
     {
-        node->previous->next = node->next;
+        n->prev->next = n->next;
     }
-    free(node);
+    free(n);
 }
 
-int list_count(struct list *list)
+int list_count(list_t *l)
 {
-    int count = 0;
-    list_for_each(list, node)
+    int c = 0;
+    list_for_each(l, n)
     {
-        count++;
+        c++;
     }
-    return count;
+    return c;
 }
 
-bool list_contains(struct list *list, void *data)
+bool list_contains(list_t *l, void *data)
 {
-    list_for_each(list, node)
+    list_for_each(l, n)
     {
-        if (node->data == data)
+        if (n->data == data)
         {
             return true;
         }
@@ -136,35 +136,35 @@ bool list_contains(struct list *list, void *data)
     return false;
 }
 
-void *list_get_at(struct list *list, int index)
+void *list_get_at(list_t *l, int idx)
 {
-    int current_index = 0;
-    list_for_each(list, node)
+    int i = 0;
+    list_for_each(l, n)
     {
-        if (current_index == index)
+        if (i == idx)
         {
-            return node->data;
+            return n->data;
         }
-        current_index++;
+        i++;
     }
     return NULL;
 }
 
-void list_reverse(struct list *list)
+void list_reverse(list_t *l)
 {
-    struct list_node *head = list->head;
-    struct list_node *temp = NULL;
-    struct list_node *current = list->head;
-    while (current)
+    list_node_t *head = l->head;
+    list_node_t *temp = NULL;
+    list_node_t *curr = l->head;
+    while (curr)
     {
-        temp = current->previous;
-        current->previous = current->next;
-        current->next = temp;
-        current = current->previous;
+        temp = curr->prev;
+        curr->prev = curr->next;
+        curr->next = temp;
+        curr = curr->prev;
     }
     if (temp != NULL)
     {
-        list->head = temp->previous;
+        l->head = temp->prev;
     }
-    list->tail = head;
+    l->tail = head;
 }
