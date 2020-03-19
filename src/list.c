@@ -136,7 +136,7 @@ bool list_contains(list_t *l, void *data)
     return false;
 }
 
-void *list_get_at(list_t *l, int idx)
+void *list_get(list_t *l, int idx)
 {
     int i = 0;
     list_for_each(l, n)

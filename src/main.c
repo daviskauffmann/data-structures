@@ -87,19 +87,19 @@ void list_test(void)
 
     // get elements
     int *ip;
-    ip = list_get_at(l, 0);
+    ip = list_get(l, 0);
     assert(ip);
     assert(ip == &i1);
     assert(*ip == i1);
-    ip = list_get_at(l, 1);
+    ip = list_get(l, 1);
     assert(ip);
     assert(ip == &i2);
     assert(*ip == i2);
-    ip = list_get_at(l, 2);
+    ip = list_get(l, 2);
     assert(ip);
     assert(ip == &i3);
     assert(*ip == i3);
-    ip = list_get_at(l, 3);
+    ip = list_get(l, 3);
     assert(ip);
     assert(ip == &i5);
     assert(*ip == i5);
@@ -108,19 +108,19 @@ void list_test(void)
     list_reverse(l);
 
     // verify reverse
-    ip = list_get_at(l, 0);
+    ip = list_get(l, 0);
     assert(ip);
     assert(ip == &i5);
     assert(*ip == i5);
-    ip = list_get_at(l, 1);
+    ip = list_get(l, 1);
     assert(ip);
     assert(ip == &i3);
     assert(*ip == i3);
-    ip = list_get_at(l, 2);
+    ip = list_get(l, 2);
     assert(ip);
     assert(ip == &i2);
     assert(*ip == i2);
-    ip = list_get_at(l, 3);
+    ip = list_get(l, 3);
     assert(ip);
     assert(ip == &i1);
     assert(*ip == i1);
