@@ -1,14 +1,14 @@
-CC := gcc
-CFLAGS := -ggdb -std=c99 -Wall -Wextra -Wpedantic -Wno-unused-parameter
-CPPFLAGS :=
-LDFLAGS :=
-LDLIBS :=
+CC = gcc
+CFLAGS = -ggdb -std=c99 -Wall -Wextra -Wpedantic -Wno-unused-parameter
+CPPFLAGS =
+LDFLAGS =
+LDLIBS =
 
-SRC	:= \
+SRC	= \
 	src/array.c \
 	src/list.c \
 	src/main.c
-TARGET := bin/main
+TARGET = bin/main
 
 .PHONY: all
 all: $(TARGET)
